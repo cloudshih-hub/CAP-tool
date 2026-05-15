@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國中會考級距成績試算器</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --ch: #4F6DF5;
+  --ss: #E07A2F;
+  --sc: #2DB46A;
+
+  --bg: #F4F5F8;
+  --card: #FFFFFF;
+  --text: #1A1D2B;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --radius: 14px;
+}
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0 0 60px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1A1D2B 0%, #2E3558 100%);
+  color: white;
+  padding: 36px 24px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 70% 50%,
+    rgba(79,109,245,0.18) 0%,
+    transparent 60%
+  );
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 99px;
+  font-size: 12px;
+  padding: 4px 14px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.hero h1 {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hero p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 8px;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.subject-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  border: 2px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.subject-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent, #ccc);
+}
+
+.subject-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.subject-max {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.score-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 28px;
+  font-weight: 700;
+  background: transparent;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+.grade-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 99px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: 0.2s;
+  margin-top: 10px;
+}
+
+.grade-badge.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.grade-badge.mastery {
+  background: #ECFDF5;
+  color: #065F46;
+}
+
+.grade-badge.basic {
+  background: #EFF6FF;
+  color: #1E40AF;
+}
+
+.grade-badge.weak {
+  background: #FEF2F2;
+  color: #991B1B;
+}
+
+.level-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 24px 0 0;
+}
+
+.total-section {
+  margin-top: 24px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.total-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.total-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.total-score {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.total-max {
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.progress-track {
+  height: 10px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg,#4F6DF5,#7C3AED);
+  transition: width 0.5s;
+  width: 0%;
+}
+
+.grade-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.grade-row:last-child {
+  border-bottom: none;
+}
+
+.footer-note {
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.9;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <div class="hero-tag">114 年國中教育會考</div>
+  <h1>國中會考級距成績試算器</h1>
+  <p>輸入國文、社會、自然答對題數，立即查看試算結果</p>
+</div>
+
+<div class="container">
+
+  <p class="section-title">各科答對題數輸入</p>
+
+  <div class="subjects" id="subject-grid"></div>
+
+  <p class="section-title">試算結果</p>
+
+  <div class="total-section">
+
+    <div class="total-header">
+      <span class="total-label">三科級分結果（滿分 21）</span>
+      <span>
+        <span class="total-score" id="total-pts">—</span>
+        <span class="total-max"> / 21</span>
+      </span>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="prog"></div>
+    </div>
+
+    <div id="grade-rows"></div>
+
+  </div>
+
+  <p class="footer-note">
+    資料來源：台灣師範大學心測中心<br>
+    本試算器僅供級距成績參考，實際成績請以官方公告為準。
+  </p>
+
+</div>
+
+<script>
+const GRADE_PTS = {
+  'A++': 7,
+  'A+': 6,
+  'A': 5,
+  'B++': 4,
+  'B+': 3,
+  'B': 2,
+  'C': 1
+};
+
+const KEYS = ['國文','社會','自然'];
+
+const gradeData = [
+  ['國文','A++',40,42],
+  ['國文','A+',38,39],
+  ['國文','A',36,37],
+  ['國文','B++',32,35],
+  ['國文','B+',28,31],
+  ['國文','B',18,27],
+  ['國文','C',0,17],
+
+  ['社會','A++',52,54],
+  ['社會','A+',51,51],
+  ['社會','A',48,50],
+  ['社會','B++',41,47],
+  ['社會','B+',35,40],
+  ['社會','B',21,34],
+  ['社會','C',0,20],
+
+  ['自然','A++',48,50],
+  ['自然','A+',46,47],
+  ['自然','A',43,45],
+  ['自然','B++',36,42],
+  ['自然','B+',29,35],
+  ['自然','B',18,28],
+  ['自然','C',0,17]
+];
+
+let scores = {};
+
+function findGrade(subject, value) {
+  if (value === '') return null;
+
+  const num = parseFloat(value);
+
+  for (const row of gradeData) {
+    if (
+      row[0] === subject &&
+      num >= row[2] &&
+      num <= row[3]
+    ) {
+      return row[1];
+    }
+  }
+
+  return null;
+}
+
+function lvl(g) {
+  return g.startsWith('A')
+    ? '精熟'
+    : g.startsWith('B')
+    ? '基礎'
+    : '待加強';
+}
+
+function cls(g) {
+  return g.startsWith('A')
+    ? 'mastery'
+    : g.startsWith('B')
+    ? 'basic'
+    : 'weak';
+}
+
+function updateBadge(key, grade) {
+  const badge = document.getElementById('badge-' + key);
+  const label = document.getElementById('lvl-' + key);
+
+  if (!grade) {
+    badge.className = 'grade-badge';
+    badge.textContent = '';
+    label.textContent = '';
+    return;
+  }
+
+  badge.className = 'grade-badge show ' + cls(grade);
+  badge.textContent = grade;
+
+  label.textContent = lvl(grade);
+}
+
+function calc() {
+
+  let total = 0;
+  let filled = 0;
+  let html = '';
+
+  KEYS.forEach(key => {
+
+    const grade = findGrade(key, scores[key] || '');
+
+    updateBadge(key, grade);
+
+    const pts = grade ? GRADE_PTS[grade] : 0;
+
+    if (grade) {
+      total += pts;
+      filled++;
+    }
+
+    html += `
+      <div class="grade-row">
+        <span>${key}</span>
+        <span>
+          ${grade || '未輸入'}
+          ${grade ? '（' + pts + '分）' : ''}
+        </span>
+      </div>
+    `;
+  });
+
+  document.getElementById('grade-rows').innerHTML = html;
+
+  if (filled > 0) {
+    document.getElementById('total-pts').textContent = total;
+    document.getElementById('prog').style.width =
+      (total / 21 * 100) + '%';
+  } else {
+    document.getElementById('total-pts').textContent = '—';
+    document.getElementById('prog').style.width = '0%';
+  }
+}
+
+function buildGrid() {
+
+  const subjects = [
+    {
+      key:'國文',
+      accent:'var(--ch)',
+      max:'答對題數 0–42',
+      maxN:42
+    },
+    {
+      key:'社會',
+      accent:'var(--ss)',
+      max:'答對題數 0–54',
+      maxN:54
+    },
+    {
+      key:'自然',
+      accent:'var(--sc)',
+      max:'答對題數 0–50',
+      maxN:50
+    }
+  ];
+
+  let html = '';
+
+  subjects.forEach(s => {
+
+    html += `
+      <div class="subject-card" style="--accent:${s.accent}">
+        <div class="subject-name">${s.key}</div>
+
+        <div class="subject-max">
+          ${s.max}
+        </div>
+
+        <input
+          class="score-input"
+          type="number"
+          min="0"
+          max="${s.maxN}"
+          placeholder="0"
+          oninput="scores['${s.key}']=this.value; calc();"
+        >
+
+        <div class="grade-badge" id="badge-${s.key}"></div>
+
+        <div class="level-label" id="lvl-${s.key}"></div>
+      </div>
+    `;
+  });
+
+  document.getElementById('subject-grid').innerHTML = html;
+}
+
+buildGrid();
+</script>
+
+</body>
+</html>
+
+
