@@ -1,250 +1,334 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>國中會考成績試算器</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>114 國中教育會考成績試算器</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-:root {
-  --ch: #4F6DF5;
-  --ss: #E07A2F;
-  --sc: #2DB46A;
+:root{
+  --bg:#F4F5F8;
+  --card:#FFFFFF;
+  --text:#111827;
+  --muted:#6B7280;
+  --border:#E5E7EB;
 
-  --bg: #F4F5F8;
-  --card: #FFFFFF;
-  --text: #1A1D2B;
-  --muted: #6B7280;
-  --border: #E5E7EB;
-  --radius: 14px;
+  --blue:#4F6DF5;
+  --orange:#E07A2F;
+  --green:#2DB46A;
+  --purple:#7C3AED;
+  --eng:#2563EB;
+
+  --radius:18px;
 }
 
-body {
-  font-family: 'Noto Sans TC', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 0 0 60px;
+body{
+  font-family:'Noto Sans TC',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  padding-bottom:80px;
 }
 
-.hero {
-  background: linear-gradient(135deg, #1A1D2B 0%, #2E3558 100%);
-  color: white;
-  padding: 36px 24px 32px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.hero{
+  background:
+    linear-gradient(
+      135deg,
+      #1A1D2B 0%,
+      #2E3558 100%
+    );
+
+  color:white;
+  padding:46px 24px 40px;
+  text-align:center;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 70% 50%,
-    rgba(79,109,245,0.18) 0%,
-    transparent 60%
-  );
+.hero-tag{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.1);
+  font-size:12px;
+  margin-bottom:14px;
 }
 
-.hero-tag {
-  display: inline-block;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 99px;
-  font-size: 12px;
-  padding: 4px 14px;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
+.hero h1{
+  font-size:clamp(28px,6vw,42px);
+  font-weight:900;
 }
 
-.hero h1 {
-  font-size: clamp(22px, 5vw, 32px);
-  font-weight: 700;
-  letter-spacing: 1px;
+.hero p{
+  margin-top:10px;
+  color:rgba(255,255,255,0.72);
+  line-height:1.8;
+  font-size:14px;
 }
 
-.hero p {
-  font-size: 14px;
-  color: rgba(255,255,255,0.65);
-  margin-top: 8px;
+.container{
+  width:min(1100px,100%);
+  margin:auto;
+  padding:26px 16px 0;
 }
 
-.container {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 16px;
+.section-title{
+  font-size:15px;
+  font-weight:900;
+  color:var(--muted);
+  margin-bottom:14px;
 }
 
-.subjects {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 12px;
-  margin-top: 20px;
+.grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(230px,1fr));
+  gap:16px;
 }
 
-.subject-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 18px 16px;
-  border: 2px solid var(--border);
-  position: relative;
-  overflow: hidden;
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.03);
 }
 
-.subject-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--accent, #ccc);
+.subject-card{
+  position:relative;
+  overflow:hidden;
 }
 
-.subject-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 4px;
+.subject-card::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:5px;
+  background:var(--accent);
 }
 
-.subject-max {
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 12px;
+.subject-name{
+  color:var(--accent);
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:4px;
 }
 
-.score-input {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-size: 28px;
-  font-weight: 700;
-  background: transparent;
-  font-family: 'Noto Sans TC', sans-serif;
+.subject-desc{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:14px;
 }
 
-.grade-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 99px;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: 0.2s;
-  margin-top: 10px;
+.score-input{
+  width:100%;
+  border:none;
+  outline:none;
+  background:#F8FAFC;
+  border-radius:14px;
+  padding:14px;
+  font-size:30px;
+  font-weight:900;
+  transition:0.2s;
+  border:2px solid transparent;
 }
 
-.grade-badge.show {
-  opacity: 1;
-  transform: translateY(0);
+.score-input:focus{
+  border-color:var(--accent);
+  background:white;
 }
 
-.grade-badge.mastery {
-  background: #ECFDF5;
-  color: #065F46;
+.inline-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
 
-.grade-badge.basic {
-  background: #EFF6FF;
-  color: #1E40AF;
+.inline-grid-3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
 }
 
-.grade-badge.weak {
-  background: #FEF2F2;
-  color: #991B1B;
+.mini-label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+  font-weight:700;
 }
 
-.level-label {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 4px;
-  min-height: 16px;
+.mini-input{
+  width:100%;
+  border:none;
+  outline:none;
+  border-radius:12px;
+  background:#F8FAFC;
+  padding:12px;
+  font-size:20px;
+  font-weight:900;
 }
 
-.section-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--muted);
-  margin: 24px 0 0;
+.grade-badge{
+  margin-top:14px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:900;
+  opacity:0;
+  transform:translateY(6px);
+  transition:0.2s;
 }
 
-.total-section {
-  margin-top: 24px;
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 24px;
-  border: 1px solid var(--border);
+.grade-badge.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
-.total-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 16px;
+.mastery{
+  background:#ECFDF5;
+  color:#065F46;
 }
 
-.total-label {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--muted);
+.basic{
+  background:#EFF6FF;
+  color:#1D4ED8;
 }
 
-.total-score {
-  font-size: 40px;
-  font-weight: 700;
+.weak{
+  background:#FEF2F2;
+  color:#991B1B;
 }
 
-.total-max {
-  font-size: 18px;
-  color: var(--muted);
+.level-label{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+  min-height:18px;
 }
 
-.progress-track {
-  height: 10px;
-  background: var(--border);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-bottom: 12px;
+.result-card{
+  margin-top:24px;
 }
 
-.progress-fill {
-  height: 100%;
-  border-radius: 99px;
-  background: linear-gradient(90deg,#4F6DF5,#7C3AED);
-  transition: width 0.5s;
-  width: 0%;
+.result-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:14px;
+  margin-bottom:18px;
 }
 
-.grade-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
+.result-title{
+  font-size:16px;
+  font-weight:900;
 }
 
-.grade-row:last-child {
-  border-bottom: none;
+.result-big{
+  font-size:56px;
+  font-weight:900;
 }
 
-.footer-note {
-  margin-top: 16px;
-  font-size: 11px;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.9;
+.result-max{
+  font-size:22px;
+  color:var(--muted);
+}
+
+.progress{
+  width:100%;
+  height:14px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#E5E7EB;
+  margin-bottom:18px;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  transition:0.4s;
+  background:
+    linear-gradient(
+      90deg,
+      #4F6DF5,
+      #7C3AED
+    );
+}
+
+.grade-row{
+  display:flex;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.grade-row:last-child{
+  border-bottom:none;
+}
+
+.summary-grid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+}
+
+.summary-item{
+  background:#F8FAFC;
+  border-radius:14px;
+  padding:16px;
+}
+
+.summary-label{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:6px;
+}
+
+.summary-value{
+  font-size:34px;
+  font-weight:900;
+}
+
+.footer-note{
+  margin-top:28px;
+  text-align:center;
+  color:var(--muted);
+  line-height:2;
+  font-size:12px;
+}
+
+@media(max-width:700px){
+
+  .result-header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .result-big{
+    font-size:42px;
+  }
+
+  .inline-grid-3{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -252,58 +336,99 @@ body {
 <body>
 
 <div class="hero">
-  <div class="hero-tag">114 年國中教育會考</div>
-  <h1>國中會考成績試算器</h1>
-  <p>輸入國文、社會、自然答對題數，立即查看級距試算結果</p>
+
+  <div class="hero-tag">
+    114 年國中教育會考
+  </div>
+
+  <h1>
+    國中會考成績試算器
+  </h1>
+
+  <p>
+    輸入五科成績，即時計算級分與總積分
+  </p>
+
 </div>
 
 <div class="container">
 
-  <p class="section-title">各科答對題數輸入</p>
+  <div class="section-title">
+    五科成績輸入
+  </div>
 
-  <div class="subjects" id="subject-grid"></div>
+  <div class="grid" id="subject-grid"></div>
 
-  <p class="section-title">試算結果</p>
+  <div class="card result-card">
 
-  <div class="total-section">
+    <div class="result-header">
 
-    <div class="total-header">
-      <span class="total-label">三科級分結果（滿分 21）</span>
-      <span>
-        <span class="total-score" id="total-pts">—</span>
-        <span class="total-max"> / 21</span>
-      </span>
+      <div>
+        <div class="result-title">
+          114 會考五科總積分
+        </div>
+      </div>
+
+      <div>
+        <span class="result-big" id="total-pts">—</span>
+        <span class="result-max">/ 35</span>
+      </div>
+
     </div>
 
-    <div class="progress-track">
+    <div class="progress">
       <div class="progress-fill" id="prog"></div>
     </div>
 
     <div id="grade-rows"></div>
 
+    <div class="summary-grid">
+
+      <div class="summary-item">
+        <div class="summary-label">A 類總數</div>
+        <div class="summary-value" id="count-a">0</div>
+      </div>
+
+      <div class="summary-item">
+        <div class="summary-label">B 類總數</div>
+        <div class="summary-value" id="count-b">0</div>
+      </div>
+
+      <div class="summary-item">
+        <div class="summary-label">C 類總數</div>
+        <div class="summary-value" id="count-c">0</div>
+      </div>
+
+    </div>
+
   </div>
 
-  <p class="footer-note">
+  <div class="footer-note">
     資料來源：台灣師範大學心測中心<br>
-    本試算器僅供級距成績參考，實際成績請以官方公告為準。
-  </p>
+    本試算器僅供參考，實際成績請以官方公告為準。
+  </div>
 
 </div>
 
 <script>
 const GRADE_PTS = {
-  'A++': 7,
-  'A+': 6,
-  'A': 5,
-  'B++': 4,
-  'B+': 3,
-  'B': 2,
-  'C': 1
+  'A++':7,
+  'A+':6,
+  'A':5,
+  'B++':4,
+  'B+':3,
+  'B':2,
+  'C':1
 };
 
-const KEYS = ['國文','社會','自然'];
+/*
+格式：
+[科目,級別,最低,最高]
+*/
 
 const gradeData = [
+
+  // 國文
   ['國文','A++',40,42],
   ['國文','A+',38,39],
   ['國文','A',36,37],
@@ -312,6 +437,7 @@ const gradeData = [
   ['國文','B',18,27],
   ['國文','C',0,17],
 
+  // 社會
   ['社會','A++',52,54],
   ['社會','A+',51,51],
   ['社會','A',48,50],
@@ -320,28 +446,92 @@ const gradeData = [
   ['社會','B',21,34],
   ['社會','C',0,20],
 
+  // 自然
   ['自然','A++',48,50],
   ['自然','A+',46,47],
   ['自然','A',43,45],
   ['自然','B++',36,42],
   ['自然','B+',29,35],
   ['自然','B',18,28],
-  ['自然','C',0,17]
+  ['自然','C',0,17],
+
+  /*
+  數學、英文級距請自行依 Google Sheet 更新
+  格式完全相同
+  */
+
+  ['數學','A++',98,100],
+  ['數學','A+',93,97.99],
+  ['數學','A',88,92.99],
+  ['數學','B++',80,87.99],
+  ['數學','B+',70,79.99],
+  ['數學','B',60,69.99],
+  ['數學','C',0,59.99],
+
+  ['英文','A++',98,100],
+  ['英文','A+',93,97.99],
+  ['英文','A',88,92.99],
+  ['英文','B++',80,87.99],
+  ['英文','B+',70,79.99],
+  ['英文','B',60,69.99],
+  ['英文','C',0,59.99]
+];
+
+const subjects = [
+
+  {
+    key:'國文',
+    accent:'#4F6DF5',
+    type:'normal',
+    max:'答對題數 0–42',
+    maxN:42
+  },
+
+  {
+    key:'社會',
+    accent:'#E07A2F',
+    type:'normal',
+    max:'答對題數 0–54',
+    maxN:54
+  },
+
+  {
+    key:'自然',
+    accent:'#2DB46A',
+    type:'normal',
+    max:'答對題數 0–50',
+    maxN:50
+  },
+
+  {
+    key:'數學',
+    accent:'#7C3AED',
+    type:'weighted'
+  },
+
+  {
+    key:'英文',
+    accent:'#2563EB',
+    type:'weighted'
+  }
 ];
 
 let scores = {};
 
-function findGrade(subject, value) {
-  if (value === '') return null;
+function findGrade(subject,value){
+
+  if(value === '' || value == null)
+    return null;
 
   const num = parseFloat(value);
 
-  for (const row of gradeData) {
-    if (
+  for(const row of gradeData){
+
+    if(
       row[0] === subject &&
       num >= row[2] &&
       num <= row[3]
-    ) {
+    ){
       return row[1];
     }
   }
@@ -349,7 +539,8 @@ function findGrade(subject, value) {
   return null;
 }
 
-function lvl(g) {
+function lvl(g){
+
   return g.startsWith('A')
     ? '精熟'
     : g.startsWith('B')
@@ -357,7 +548,8 @@ function lvl(g) {
     : '待加強';
 }
 
-function cls(g) {
+function cls(g){
+
   return g.startsWith('A')
     ? 'mastery'
     : g.startsWith('B')
@@ -365,123 +557,355 @@ function cls(g) {
     : 'weak';
 }
 
-function updateBadge(key, grade) {
-  const badge = document.getElementById('badge-' + key);
-  const label = document.getElementById('lvl-' + key);
+function updateBadge(key,grade){
 
-  if (!grade) {
-    badge.className = 'grade-badge';
-    badge.textContent = '';
-    label.textContent = '';
+  const badge =
+    document.getElementById('badge-'+key);
+
+  const label =
+    document.getElementById('lvl-'+key);
+
+  if(!grade){
+
+    badge.className='grade-badge';
+    badge.textContent='';
+
+    label.textContent='';
+
     return;
   }
 
-  badge.className = 'grade-badge show ' + cls(grade);
+  badge.className =
+    'grade-badge show ' + cls(grade);
+
   badge.textContent = grade;
 
   label.textContent = lvl(grade);
 }
 
-function calc() {
+function calcWeighted(subject){
+
+  if(subject === '數學'){
+
+    const c =
+      parseFloat(
+        document.getElementById('數學-correct').value
+      );
+
+    const t =
+      parseFloat(
+        document.getElementById('數學-total').value
+      );
+
+    const n =
+      parseFloat(
+        document.getElementById('數學-non').value
+      );
+
+    if(
+      !isNaN(c) &&
+      !isNaN(t) &&
+      !isNaN(n) &&
+      t > 0
+    ){
+
+      return (
+        (c / t) * 80 +
+        (n / 6) * 20
+      );
+    }
+  }
+
+  if(subject === '英文'){
+
+    const c =
+      parseFloat(
+        document.getElementById('英文-correct').value
+      );
+
+    const t =
+      parseFloat(
+        document.getElementById('英文-total').value
+      );
+
+    const n =
+      parseFloat(
+        document.getElementById('英文-non').value
+      );
+
+    if(
+      !isNaN(c) &&
+      !isNaN(t) &&
+      !isNaN(n) &&
+      t > 0
+    ){
+
+      return (
+        (c / t) * 80 +
+        (n / 12) * 20
+      );
+    }
+  }
+
+  return null;
+}
+
+function calcAll(){
 
   let total = 0;
-  let filled = 0;
   let html = '';
 
-  KEYS.forEach(key => {
+  let countA = 0;
+  let countB = 0;
+  let countC = 0;
 
-    const grade = findGrade(key, scores[key] || '');
+  subjects.forEach(s=>{
 
-    updateBadge(key, grade);
+    let scoreValue = null;
 
-    const pts = grade ? GRADE_PTS[grade] : 0;
+    if(s.type === 'normal'){
 
-    if (grade) {
-      total += pts;
-      filled++;
+      scoreValue =
+        scores[s.key] || '';
+
+    }else{
+
+      scoreValue =
+        calcWeighted(s.key);
+    }
+
+    const grade =
+      findGrade(
+        s.key,
+        scoreValue
+      );
+
+    updateBadge(s.key,grade);
+
+    const pts =
+      grade
+      ? GRADE_PTS[grade]
+      : 0;
+
+    total += pts;
+
+    if(grade){
+
+      if(grade.startsWith('A'))
+        countA++;
+
+      else if(grade.startsWith('B'))
+        countB++;
+
+      else
+        countC++;
     }
 
     html += `
       <div class="grade-row">
-        <span>${key}</span>
+
+        <span>
+          ${s.key}
+        </span>
+
         <span>
           ${grade || '未輸入'}
-          ${grade ? '（' + pts + '分）' : ''}
+          ${grade ? `（${pts}分）` : ''}
         </span>
+
       </div>
     `;
   });
 
-  document.getElementById('grade-rows').innerHTML = html;
+  document.getElementById('grade-rows')
+    .innerHTML = html;
 
-  if (filled > 0) {
-    document.getElementById('total-pts').textContent = total;
-    document.getElementById('prog').style.width =
-      (total / 21 * 100) + '%';
-  } else {
-    document.getElementById('total-pts').textContent = '—';
-    document.getElementById('prog').style.width = '0%';
-  }
+  document.getElementById('count-a')
+    .textContent = countA;
+
+  document.getElementById('count-b')
+    .textContent = countB;
+
+  document.getElementById('count-c')
+    .textContent = countC;
+
+  document.getElementById('total-pts')
+    .textContent = total || '—';
+
+  document.getElementById('prog')
+    .style.width =
+      (total / 35 * 100) + '%';
 }
 
-function buildGrid() {
-
-  const subjects = [
-    {
-      key:'國文',
-      accent:'var(--ch)',
-      max:'答對題數 0–42',
-      maxN:42
-    },
-    {
-      key:'社會',
-      accent:'var(--ss)',
-      max:'答對題數 0–54',
-      maxN:54
-    },
-    {
-      key:'自然',
-      accent:'var(--sc)',
-      max:'答對題數 0–50',
-      maxN:50
-    }
-  ];
+function buildGrid(){
 
   let html = '';
 
-  subjects.forEach(s => {
+  subjects.forEach(s=>{
 
-    html += `
-      <div class="subject-card" style="--accent:${s.accent}">
-        <div class="subject-name">${s.key}</div>
+    if(s.type === 'normal'){
 
-        <div class="subject-max">
-          ${s.max}
-        </div>
-
-        <input
-          class="score-input"
-          type="number"
-          min="0"
-          max="${s.maxN}"
-          placeholder="0"
-          oninput="scores['${s.key}']=this.value; calc();"
+      html += `
+        <div
+          class="card subject-card"
+          style="--accent:${s.accent}"
         >
 
-        <div class="grade-badge" id="badge-${s.key}"></div>
+          <div class="subject-name">
+            ${s.key}
+          </div>
 
-        <div class="level-label" id="lvl-${s.key}"></div>
-      </div>
-    `;
+          <div class="subject-desc">
+            ${s.max}
+          </div>
+
+          <input
+            class="score-input"
+            type="number"
+            min="0"
+            max="${s.maxN}"
+            placeholder="0"
+
+            oninput="
+              scores['${s.key}']=this.value;
+              calcAll();
+            "
+          >
+
+          <div
+            class="grade-badge"
+            id="badge-${s.key}"
+          ></div>
+
+          <div
+            class="level-label"
+            id="lvl-${s.key}"
+          ></div>
+
+        </div>
+      `;
+    }
+
+    else{
+
+      html += `
+        <div
+          class="card subject-card"
+          style="--accent:${s.accent}"
+        >
+
+          <div class="subject-name">
+            ${s.key}
+          </div>
+
+          <div class="subject-desc">
+            選擇題 80%＋非選題 20%
+          </div>
+
+          <div class="inline-grid-3">
+
+            <div>
+
+              <div class="mini-label">
+                答對
+              </div>
+
+              <input
+                id="${s.key}-correct"
+                class="mini-input"
+                type="number"
+                placeholder="25"
+              >
+
+            </div>
+
+            <div>
+
+              <div class="mini-label">
+                總題數
+              </div>
+
+              <input
+                id="${s.key}-total"
+                class="mini-input"
+                type="number"
+                placeholder="25"
+              >
+
+            </div>
+
+            <div>
+
+              <div class="mini-label">
+                非選
+              </div>
+
+              <input
+                id="${s.key}-non"
+                class="mini-input"
+                type="number"
+                placeholder="${
+                  s.key === '數學'
+                  ? '6'
+                  : '12'
+                }"
+              >
+
+            </div>
+
+          </div>
+
+          <div
+            style="
+              margin-top:14px;
+              font-size:13px;
+              color:var(--muted);
+            "
+          >
+            加權分數：
+            <span id="${s.key}-score">
+              —
+            </span>
+          </div>
+
+          <div
+            class="grade-badge"
+            id="badge-${s.key}"
+          ></div>
+
+          <div
+            class="level-label"
+            id="lvl-${s.key}"
+          ></div>
+
+        </div>
+      `;
+    }
   });
 
-  document.getElementById('subject-grid').innerHTML = html;
+  document.getElementById('subject-grid')
+    .innerHTML = html;
 }
 
 buildGrid();
+
+document.addEventListener('input',()=>{
+
+  ['數學','英文'].forEach(k=>{
+
+    const score =
+      calcWeighted(k);
+
+    document.getElementById(k+'-score')
+      .textContent =
+        score != null
+        ? score.toFixed(2)
+        : '—';
+  });
+
+  calcAll();
+});
 </script>
 
 </body>
 </html>
-
-
