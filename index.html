@@ -92,9 +92,22 @@ body{
 
 .grid{
   display:grid;
-  grid-template-columns:
-    repeat(auto-fit,minmax(230px,1fr));
+  grid-template-columns:repeat(3,1fr);
   gap:16px;
+}
+
+@media(max-width:900px){
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:640px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
 }
 
 .card{
@@ -152,16 +165,17 @@ body{
   background:white;
 }
 
-.inline-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
 .inline-grid-3{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:10px;
+}
+
+@media(max-width:640px){
+
+  .inline-grid-3{
+    grid-template-columns:1fr;
+  }
 }
 
 .mini-label{
@@ -325,10 +339,6 @@ body{
   .result-big{
     font-size:42px;
   }
-
-  .inline-grid-3{
-    grid-template-columns:1fr;
-  }
 }
 </style>
 </head>
@@ -385,17 +395,17 @@ body{
     <div class="summary-grid">
 
       <div class="summary-item">
-        <div class="summary-label">A 類總數</div>
+        <div class="summary-label">A 精熟</div>
         <div class="summary-value" id="count-a">0</div>
       </div>
 
       <div class="summary-item">
-        <div class="summary-label">B 類總數</div>
+        <div class="summary-label">B 基礎</div>
         <div class="summary-value" id="count-b">0</div>
       </div>
 
       <div class="summary-item">
-        <div class="summary-label">C 類總數</div>
+        <div class="summary-label">待加強</div>
         <div class="summary-value" id="count-c">0</div>
       </div>
 
@@ -421,14 +431,8 @@ const GRADE_PTS = {
   'C':1
 };
 
-/*
-格式：
-[科目,級別,最低,最高]
-*/
-
 const gradeData = [
 
-  // 國文
   ['國文','A++',40,42],
   ['國文','A+',38,39],
   ['國文','A',36,37],
@@ -437,7 +441,6 @@ const gradeData = [
   ['國文','B',18,27],
   ['國文','C',0,17],
 
-  // 社會
   ['社會','A++',52,54],
   ['社會','A+',51,51],
   ['社會','A',48,50],
@@ -446,7 +449,6 @@ const gradeData = [
   ['社會','B',21,34],
   ['社會','C',0,20],
 
-  // 自然
   ['自然','A++',48,50],
   ['自然','A+',46,47],
   ['自然','A',43,45],
@@ -454,11 +456,6 @@ const gradeData = [
   ['自然','B+',29,35],
   ['自然','B',18,28],
   ['自然','C',0,17],
-
-  /*
-  數學、英文級距請自行依 Google Sheet 更新
-  格式完全相同
-  */
 
   ['數學','A++',98,100],
   ['數學','A+',93,97.99],
